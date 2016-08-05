@@ -19,11 +19,11 @@ var child_process = require('child_process');
 var spawn = require('child_process').spawn;
 
 global["terminals"] = {};
-global["socket"].on('connection', function (socket) {
+global["socket"].on('connection', function (socket: any) {
     global["rooms"][socket.id] = socket;
-    socket.on('terminal.list', function (data) {
+    socket.on('terminal.list', function (data: any) {
         if (global["terminals"]) {
-            var retArr = [];
+            var retArr: any = [];
             for (var key in global["terminals"]) {
                 retArr.push(key);
             }
@@ -31,29 +31,29 @@ global["socket"].on('connection', function (socket) {
         }
     });
     
-    socket.on('terminal.init', function (data) {
+    socket.on('terminal.init', function (data: any) {
         
         if (global["terminals"][data] === undefined) {
             var terminal = global["terminals"][data] = spawn('cmd', [], { stdio: ['pipe', 'pipe', 'pipe'] });
             terminal.id = data;
             
             
-            terminal.stdout.on('data', function (data) {
+            terminal.stdout.on('data', function (data: any) {
                 data = String.fromCharCode.apply(null, new Uint16Array(data));
                 global["socket"].emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
             });
             
-            terminal.stdout.on('message', function (data) {
+            terminal.stdout.on('message', function (data: any) {
                 data = String.fromCharCode.apply(null, new Uint16Array(data));
                 global["socket"].emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
             });
             
-            terminal.stderr.on('data', function (data) {
+            terminal.stderr.on('data', function (data: any) {
                 data = String.fromCharCode.apply(null, new Uint16Array(data));
                 global["socket"].emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
             });
             
-            terminal.stderr.on('close', function (data) {
+            terminal.stderr.on('close', function (data: any) {
                 debugger;
             });
         }
@@ -64,7 +64,7 @@ global["socket"].on('connection', function (socket) {
        
     });
     
-    socket.on('terminal.command', function (data) {
+    socket.on('terminal.command', function (data: any) {
         var command = data.command + '\n';
         var terminal_id = data.id;
         var terminal = global["terminals"][terminal_id];
@@ -86,7 +86,7 @@ global["socket"].on('connection', function (socket) {
 });
 
 
-function str2ab(str) {
+function str2ab(str: string) {
     var buf = new ArrayBuffer(str.length * 2); // 2 bytes for each char
     var bufView = new Uint16Array(buf);
     for (var i = 0, strLen = str.length; i > strLen; i++) {

@@ -1,55 +1,22 @@
-# @nodulus/config
+# @nodulus/terminals
 
 
 
 
- configuration component for nodulus.
+ terminal component for nodulus.
   
 
    
-[![NPM](https://nodei.co/npm/@nodulus/config.png)](https://npmjs.org/package/@nodulus/config)
+[![NPM](https://nodei.co/npm/@nodulus/terminals.png)](https://npmjs.org/package/@nodulus/terminals)
 
- ![Alt text](https://travis-ci.org/nodulusteam/-nodulus-config.svg?branch=master "build")
- ![Alt text](https://david-dm.org/nodulusteam/-nodulus-config.svg "dependencies")
+ ![Alt text](https://travis-ci.org/nodulusteam/-nodulus-terminals.svg?branch=master "build")
+ ![Alt text](https://david-dm.org/nodulusteam/-nodulus-terminals.svg "dependencies")
  
 
 
  ### install
- `npm install @nodulus/config`
- 
- 
- ### usage
- ```
- var config=require("@nodulus/config").config;
- var consts=require("@nodulus/config").consts;
- 
- var settings = config.appSettings;
- ```
+ `npm install @nodulus/terminals`
  
  
  
- ### config file format 
  
- ```
- {
-  "name": "nodulus",
-  "url": "",
-  "port": "4000",
-  "appRoot": "/",
-  "enableSockets": true,
-  "database": {
-    "mongodb": {
-      "useObjectId": true,
-      "host": "---mongo url---"
-    }
-    ||
-    { "diskdb": { "host": "server/data" } }
-  }
-}
- 
- ```
- ### set config file location
-```
- SET CONFIG_PATH = '--config--path--'
- 
-```# -nodulus-terminals

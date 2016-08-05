@@ -6,7 +6,7 @@
  |_| |_|\___/ \__,_|\__,_|_|\__,_|___/
  @ewave open source | ©Roi ben haim  ®2016
  */
-/// <reference path="../typings/node/node.d.ts" /> 
+/// <reference path="../typings/main.d.ts" /> 
 var express = require('express');
 var router = express.Router();
 var util = require('util');
