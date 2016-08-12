@@ -1,12 +1,15 @@
 {
   "name": "@nodulus/terminals",
-  "version": "1.0.3",
-  "description": "",
+  "version": "1.0.5",
+  "description": "terminal module for nodulus",
   "main": "terminal.js",
    "scripts": {
     "test": "mocha tests --recursive"
   },
-  "author": "",
+ "keywords": [
+    "nodulus", "nodulus-extension"
+  ],
+  "author": "nodulusteam",
   "license": "ISC",
    "devDependencies": {
     "chai": "^3.5.0",

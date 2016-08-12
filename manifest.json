@@ -22,7 +22,7 @@
       "ParentId": "00000000-0000-0000-0000-000000000000",
       "Name": "terminal",
       "label": "terminal",
-      "Url": "/modules/terminals/terminal.html",
+      "Url": "@nodulus/terminals/terminal.html",
       "Alias": "terminal"
     }
   ]

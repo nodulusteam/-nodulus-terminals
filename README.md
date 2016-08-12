@@ -18,5 +18,9 @@
  `npm install @nodulus/terminals`
  
  
+
+ ##### Screenshot
+![Alt text](art/terminals.png?raw=true "Terminals")
+
  
  
