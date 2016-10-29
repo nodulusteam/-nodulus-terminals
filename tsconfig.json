@@ -5,13 +5,10 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-     
     "sourceMap": false,
-    "declaration":true
-    
+    "declaration": true
   },
-
-  "exclude": [  
+  "exclude": [
     "node_modules",
     "wwwroot"
   ]

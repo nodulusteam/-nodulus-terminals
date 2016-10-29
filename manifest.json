@@ -13,12 +13,12 @@
     }
   ],
   "module": {
-    "name": "terminal"
+    "name": "@nodulus/terminals"
   },
   "npm": {},
   "navigation": [
     {
-      "_id": "terminal",
+      "_id": "@nodulus/terminals",
       "ParentId": "00000000-0000-0000-0000-000000000000",
       "Name": "terminal",
       "label": "terminal",

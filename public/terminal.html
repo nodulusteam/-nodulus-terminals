@@ -1,57 +1,109 @@
 ﻿<div ng-controller="terminalController">
-    <style>
-        .terminal {
-            width: 100%;
-            background-color: black;
-            color: white;
+	<style>
+		.terminal {
+			background-color: black;
+			color: white;
+			flex: 1 100%;
+		}
+		
+		.terminal pre,
+		.terminal .pre {
+			background-color: black;
+			font-size: 12px;
+			color: white;
+			border: none;
+			padding: 1px;
+			margin: 0;
+			padding-left: 15px!important;
+			unicode-bidi: embed;
+			font-family: monospace;
+			white-space: pre;
+		}
+		
+		.terminal span {
+			clear: left;
+		}
+		
+		.terminal .prompt {
+			display: inline;
+			border-bottom: 1px dotted white;
+			min-width: 100px;
+			width: 400px;
+			outline: none;
+			font-size: 12px;
+		}
+
+        .terminalBtn {
+            margin:3px;
+            border-radius: 5px;
+
         }
-
-            .terminal pre {
-                background-color: black;
-                font-size: 11px;
-                color: white;
-                border: none!important;
-            }
-
-            .terminal span {
-                clear: left;
-            }
-    </style>
+	</style>
 
 
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+				<a class="navbar-brand" href="#" data-selected="true"> .:\> Terminals </a>
+			</div>
+			<div id="navbar" class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Connect <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a ng-click="init_terminal()">New console</a></li>
+							<li role="separator" class="divider"></li>
+							<li ng-repeat="terminal in terminals"><a ng-click="init_terminal(terminal)" ng-class="{'btn-success': terminal === active_terminal.id,'btn-default': terminal !== active_terminal.id}">Console instance</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">History <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li ng-repeat="line in active_terminal.history"><a ng-click="sendLine(line)">{{line}}</a></li>
+						</ul>
+					</li>
+
+					<div>
+
+					</div>
 
 
-    <md-progress-linear md-mode='indeterminate' data-ng-show="ModuleLoading"></md-progress-linear>
-    <div class="row">
 
-    </div>
-    <div class="col-md-1">
-        <a class="btn btn-primary" ng-click="init_terminal()">new terminal</a>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a ng-click="cls()" class="btn btn-danger terminalBtn">cls</a></li>
+					<li><a ng-click="close()" class="btn btn-warning terminalBtn">close</a></li>
+					 
+				</ul>
+			</div>
+			<!--/.nav-collapse -->
+		</div>
+		<!--/.container-fluid -->
+	</nav>
+
+	<md-progress-linear md-mode='indeterminate' data-ng-show="ModuleLoading"></md-progress-linear>
+	<div class="container-fluid">
+		<div terminal ng-show="active_terminal!== null">
+			<div class="terminal" style="height: {{PaneHeight-190}}px; overflow: auto;">
+
+				<span ng-repeat="line in active_terminal.lines">
+					<span ng-bind-html="text" ng-repeat="text in line.text " class="pre"></span>
+				</span>
 
 
 
-        <a ng-repeat="terminal in terminals"
-           ng-class="{'btn-danger': terminal === active_terminal.id,'btn-primary': terminal !== active_terminal.id}"
-           class="btn" ng-click="init_terminal(terminal)">
-            connect 
-        </a>
 
-
-
-    </div>
-
-    <div class="col-md-11">
-        
-        <div terminal ng-show="active_terminal!== null">
-
-            <div class="terminal" style="height: {{PaneHeight-115}}px; overflow: auto;">
-                <div ng-repeat="line in active_terminal.lines">
-                  
-                    <pre ng-bind="line.text"
-                         style="margin-right: 15px;min-width: 100%;"></pre>
-                </div>
-            </div>
-            <textarea class="terminal" ng-model="commandLine" style="height: 50px!important;"></textarea>
-        </div>
-    </div>
+				<span contenteditable="true" id="terminalLine" ng-bind="commandLine" my-enter="sendLine()" class="prompt pre"></span>
+			</div>
+		</div>
+	</div>
 </div>

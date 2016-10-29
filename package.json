@@ -1,17 +1,24 @@
 {
   "name": "@nodulus/terminals",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "description": "terminal module for nodulus",
   "main": "terminal.js",
-   "scripts": {
+  "scripts": {
     "test": "mocha tests --recursive"
   },
- "keywords": [
-    "nodulus", "nodulus-extension"
+  "keywords": [
+    "nodulus",
+    "nodulus-extension"
   ],
-  "author": "nodulusteam",
+  "author": "nodulus",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nodulusteam/-nodulus-terminals"
+  },
   "license": "ISC",
-   "devDependencies": {
+  "devDependencies": {
+    "@nodulus/core": "*",
+    "@nodulus/socket": "*",
     "chai": "^3.5.0",
     "del": "^2.2.1",
     "gulp": "^3.9.1",
@@ -20,10 +27,10 @@
     "gulp-publish": "^0.8.7",
     "gulp-run": "^1.7.1",
     "gulp-tslint": "^6.0.1",
-    "gulp-typescript": "^2.13.6",
+    "gulp-typescript": "^3.0.2",
     "mocha": "^2.5.3",
     "run-sequence": "^1.2.2",
     "tslint": "^3.13.0",
-    "typescript": "^1.8.10"
+    "typescript": "^2.0.3"
   }
 }

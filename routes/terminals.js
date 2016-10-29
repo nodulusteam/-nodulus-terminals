@@ -7,7 +7,7 @@
  @ewave open source | ©Roi ben haim  ®2016
  */
 /// <reference path="../typings/main.d.ts" /> 
-var express = require('express');
+var express = require('@nodulus/core');
 var router = express.Router();
 var util = require('util');
 var fs = require('fs');
@@ -17,41 +17,73 @@ var spawn = require('child_process').spawn;
 global["terminals"] = {};
 global["socket"].on('connection', function (socket) {
     global["rooms"][socket.id] = socket;
-    socket.on('terminal.list', function (data) {
-        if (global["terminals"]) {
+
+    socket.on('terminal.delete', function (data) {
+        if (global["terminals"] && global["terminals"][socket.id]) {
+            delete global["terminals"][socket.id][data];
+        }
+        if (global["terminals"] && global["terminals"][socket.id]) {
             var retArr = [];
-            for (var key in global["terminals"]) {
+            for (var key in global["terminals"][socket.id]) {
                 retArr.push(key);
             }
-            global["socket"].emit('terminal.list', { 'terminals': retArr });
+            socket.emit('terminal.list', { 'terminals': retArr });
+        }
+
+    });
+
+    socket.on('terminal.list', function (data) {
+        if (global["terminals"] && global["terminals"][socket.id]) {
+            var retArr = [];
+            for (var key in global["terminals"][socket.id]) {
+                retArr.push(key);
+            }
+            socket.emit('terminal.list', { 'terminals': retArr });
         }
     });
     socket.on('terminal.init', function (data) {
-        if (global["terminals"][data] === undefined) {
-            var terminal = global["terminals"][data] = spawn('cmd', [], { stdio: ['pipe', 'pipe', 'pipe'] });
+
+
+
+        if (!global["terminals"][socket.id] || !global["terminals"][socket.id][data]) {
+
+            if (!global["terminals"][socket.id])
+                global["terminals"][socket.id] = {};
+
+            var terminal = global["terminals"][socket.id][data] = spawn('cmd', [], { stdio: ['pipe', 'pipe', 'pipe'] });
             terminal.id = data;
             terminal.stdout.on('data', function (data) {
                 data = String.fromCharCode.apply(null, new Uint16Array(data));
-                global["socket"].emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
+                var lastRowpos = data.lastIndexOf('\r\n');
+                console.log(data.substr(0, lastRowpos));
+                console.log(data.substring(lastRowpos + 1));
+                socket.emit('terminal.result', { 'id': terminal.id, 'stdout': data.substr(0, lastRowpos), 'stderr': null });
+
+                socket.emit('terminal.result', { 'id': terminal.id, 'stdout': data.substring(lastRowpos + 1), 'stderr': null });
+
+
             });
             terminal.stdout.on('message', function (data) {
                 data = String.fromCharCode.apply(null, new Uint16Array(data));
-                global["socket"].emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
+                socket.emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
             });
             terminal.stderr.on('data', function (data) {
                 data = String.fromCharCode.apply(null, new Uint16Array(data));
-                global["socket"].emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
+                socket.emit('terminal.result', { 'id': terminal.id, 'stdout': data, 'stderr': null });
             });
             terminal.stderr.on('close', function (data) {
                 debugger;
             });
         }
-        global["socket"].emit('terminal.init', { 'id': data });
+        socket.emit('terminal.init', { 'id': data });
     });
     socket.on('terminal.command', function (data) {
         var command = data.command + '\n';
         var terminal_id = data.id;
-        var terminal = global["terminals"][terminal_id];
+        var terminal = global["terminals"][socket.id][terminal_id];
+        if (!terminal.history)
+            terminal.history = [];
+        terminal.history.push(command);
         terminal.stdin.setEncoding('utf-8');
         terminal.stdin.write(command);
         //
